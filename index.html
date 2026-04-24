@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Quiz 1 - HUB Intermediate</title>
+<style>
+body { font-family: Arial; max-width: 950px; margin: 30px auto; line-height:1.6 }
+h1, h2 { text-align: center; }
+.section { margin-top: 30px; }
+table { width:100%; border-collapse: collapse; margin:10px 0 }
+th, td { border:1px solid black; padding:8px }
+input { padding:5px }
+button { padding:10px 20px; margin-top:20px; display:block; margin:auto }
+.correct { background:#c8f7c5 }
+.wrong { background:#f7c5c5 }
+#result { font-size:24px; text-align:center; margin-top:20px; font-weight:bold }
+</style>
+</head>
+
+<body>
+
+<h1>Quiz 1</h1>
+
+<div class="section">
+<h2>SECTION 1 – Questions 1–10</h2>
+<p><b>Complete the table below.</b></p>
+<p><b>Write ONE WORD AND/OR A NUMBER for each answer.</b></p>
+
+<h3>COOKERY CLASSES</h3>
+
+<table>
+<tr>
+<th>Cookery Class</th>
+<th>Focus</th>
+<th>Other Information</th>
+</tr>
+
+<tr>
+<td>The Food Studio</td>
+<td>how to (1) <input id="q1"> and cook with seasonal products</td>
+<td>small classes<br>
+also offers (2) <input id="q2"> classes<br>
+clients who return get a (3) <input id="q3"> discount</td>
+</tr>
+
+<tr>
+<td>Bond’s Cookery School</td>
+<td>food that is (4) <input id="q4"></td>
+<td>includes recipes to strengthen your (5) <input id="q5"><br>
+they have a free (6) <input id="q6"> every Thursday</td>
+</tr>
+
+<tr>
+<td>The (7) <input id="q7"> Centre</td>
+<td>mainly (8) <input id="q8"> food</td>
+<td>located near the (9) <input id="q9"><br>
+a special course in skills with a (10) <input id="q10"> is sometimes available</td>
+</tr>
+</table>
+</div>
+
+<div class="section">
+<h2>SECTION 2 – Questions 11–20</h2>
+
+<h3>Questions 11–13</h3>
+<p><b>Choose the correct letter, A, B or C.</b></p>
+<h3>Traffic Changes in Granford</h3>
+<p><b>11. Why are changes needed to traffic systems in Granford?</b><br>
+<label><input type="radio" name="q11" value="a"> A. The number of traffic accidents has risen</label><br>
+<label><input type="radio" name="q11" value="b"> B. The amount of traffic has increased</label><br>
+<label><input type="radio" name="q11" value="c"> C. The types of vehicles have changed</label>
+</p>
+
+<p><b>12. In a survey, local residents particularly complained about</b><br>
+<label><input type="radio" name="q12" value="a"> A. dangerous driving by parents</label><br>
+<label><input type="radio" name="q12" value="b"> B. pollution from trucks and lorries</label><br>
+<label><input type="radio" name="q12" value="c"> C. inconvenience from parked cars</label>
+</p>
+
+<p><b>13. According to the speaker, one problem with the new regulations will be</b><br>
+<label><input type="radio" name="q13" value="a"> A. raising money to pay for them</label><br>
+<label><input type="radio" name="q13" value="b"> B. finding a way to make people follow them</label><br>
+<label><input type="radio" name="q13" value="c"> C. getting the support of the police</label>
+</p>
+
+<h3>Questions 14–20</h3>
+<p><b>Label the map below.</b></p>
+<p><b>Write the correct letter, A–I.</b></p>
+
+<div style="text-align:center; margin:20px 0;">
+  <img src="map.png" 
+       alt="Granford Map" 
+       style="max-width:100%; border:1px solid #ccc; cursor:zoom-in;"
+       onclick="window.open(this.src)">
+</div>
+
+<p>14. New traffic lights (14) <input id="q14"></p>
+<p>15. Pedestrian crossing (15) <input id="q15"></p>
+<p>16. Parking allowed (16) <input id="q16"></p>
+<p>17. New ‘No Parking’ sign (17) <input id="q17"></p>
+<p>18. New disabled parking spaces (18) <input id="q18"></p>
+<p>19. Widened pavement (19) <input id="q19"></p>
+<p>20. Lorry loading/unloading restrictions (20) <input id="q20"></p>
+
+</div>
+
+<button onclick="submitTest()">Submit</button>
+<div id="result"></div>
+
+<script>
+const answers = {
+q1:"choose",
+q2:"private",
+q3:["twenty percent","20 percent","20%"],
+q4:"healthy",
+q5:"bones",
+q6:"lecture",
+q7:"arretsa",
+q8:"vegetarian",
+q9:"market",
+q10:"knife",
+q11:"b",
+q12:"c",
+q13:"b",
+q14:"e",
+q15:"d",
+q16:"b",
+q17:"g",
+q18:"c",
+q19:"h",
+q20:"i"
+};
+
+function normalize(v){
+return v.toLowerCase().trim().replace(/\s+/g," ");
+}
+
+function checkAnswer(user, correct){
+if(Array.isArray(correct)){
+return correct.includes(user);
+}
+return user===correct;
+}
+
+function submitTest(){
+let score=0;
+let total=20;
+
+for(let key in answers){
+
+let el=document.getElementById(key);
+let selected=document.querySelector(`input[name="${key}"]:checked`);
+
+let user="";
+if(el) user=normalize(el.value);
+if(selected) user=selected.value;
+
+let correct=answers[key];
+
+if(checkAnswer(user,correct)){
+score++;
+if(el) el.classList.add("correct");
+if(selected) selected.parentElement.classList.add("correct");
+}else{
+if(el) el.classList.add("wrong");
+if(selected) selected.parentElement.classList.add("wrong");
+}
+}
+
+let result=document.getElementById("result");
+result.innerHTML=`Score: ${score}/20`;
+result.scrollIntoView({behavior:"smooth"});
+
+document.querySelectorAll("input").forEach(i=>i.disabled=true);
+document.querySelector("button").disabled=true;
+}
+</script>
+
+</body>
+</html>
